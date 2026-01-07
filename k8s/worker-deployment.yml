@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: devops-project-worker:latest
+          imagePullPolicy: Never
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: jobs
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres

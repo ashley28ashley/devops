@@ -1,0 +1,23 @@
+services:
+  worker:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: jobs
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: jobs
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pgdata:
