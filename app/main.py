@@ -26,7 +26,7 @@ def generate_job_value():
 def main():
     # Démarrage du serveur Prometheus sur le port 8000
     start_http_server(8000)
-    print("🚀 Prometheus metrics server started on port 8000")
+    print(" Prometheus metrics server started on port 8000")
     
     while True:
         try:
@@ -44,13 +44,13 @@ def main():
             cur.close()
             conn.close()
 
-            print(f"✅ Job processed: {value}")
+            print(f"Job processed: {value}")
             JOBS_PROCESSED.inc() # Incrémentation de la métrique Prometheus
 
             time.sleep(5)
 
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f" Error: {e}")
             time.sleep(5)
 
 if __name__ == "__main__":
