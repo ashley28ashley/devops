@@ -15,14 +15,19 @@ spec:
       containers:
         - name: postgres
           image: postgres:15-alpine
-          env:
-          
-            - name: POSTGRES_DB
-              value: jobs
-            - name: POSTGRES_USER
-              value: postgres
-            - name: POSTGRES_PASSWORD
-              value: postgres
+          envFrom:
+            - secretRef:
+                name: postgres-secret
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage

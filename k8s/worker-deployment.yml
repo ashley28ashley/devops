@@ -11,19 +11,34 @@ spec:
     metadata:
       labels:
         app: worker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
     spec:
       containers:
         - name: worker
           image: devops-project-worker:latest
           imagePullPolicy: Never
+          ports:
+            - name: metrics
+              containerPort: 8000
           env:
             - name: PYTHONUNBUFFERED
               value: "1"
             - name: DB_HOST
               value: db
             - name: DB_NAME
-              value: jobs
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_DB
             - name: DB_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_USER
             - name: DB_PASSWORD
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD

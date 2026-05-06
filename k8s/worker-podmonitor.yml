@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: worker-monitor
+  labels:
+    release: prometheus # Ce label indique à kube-prometheus-stack de prendre en compte ce monitor
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  podMetricsEndpoints:
+  - port: metrics
+    path: /metrics
