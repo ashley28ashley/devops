@@ -71,6 +71,8 @@ jobs:
 
       - name: Déploiement sur Kubernetes
         run: |
+          # Installation du CRD PodMonitor (car Prometheus n'est pas installé dans le cluster de test CI)
+          kubectl apply --server-side -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/main/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
           kubectl apply -f k8s/
           # Attente que le déploiement soit validé
           kubectl rollout status deployment/worker --timeout=60s
